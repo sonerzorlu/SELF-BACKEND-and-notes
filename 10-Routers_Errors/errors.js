@@ -56,12 +56,34 @@ app.get('/user/:id', (req, res, next) => {
     }
 
 })
+
 /* ------------------------------------------------------- *
 // ASYNC:
+const asyncFunction = async()=>{
+    throw new Error('Created error in async-func')
+}
+app.get('/async',async (req,res,next)=>{
+    await asyncFunction().catch(next) 
+})
+/* ------------------------------------------------------- */
+// express-async-handler
+// $ npm i express-async-handler
 
+const asyncHandler = require('express-async-handler')
+
+app.get('/async', asyncHandler(async (req, res, next) => {
+    res.errorStatusCode = 400
+    throw new Error('Created error in async-func')
+}))
+
+/* ------------------------------------------------------- */
+
+
+
+//? use(errorHandler) kodlamanın en sonunda yer almalı.
 const errorHandler = (err,req,res,next) =>{
     const statusCode = res.statusCode ?? 500
-    console.log("errorhandler")
+    console.log("errorhandler running")
     res.status(statusCode).send({
     
         error: true,
@@ -73,19 +95,6 @@ const errorHandler = (err,req,res,next) =>{
 
 
 app.use(errorHandler)
-
-
-/* ------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
 
 /* ------------------------------------------------------- */
 
