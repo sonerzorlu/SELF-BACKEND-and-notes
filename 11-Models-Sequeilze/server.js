@@ -10,85 +10,31 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8000;
 
 /* ------------------------------------------------------- */
-//Accept json data:
+// Accept json data:
+app.use(express.json())
 
-app.use(express.json());
-
-app.all("/", (req, res) => {
-  res.send("Welcome to Todo API");
-});
+// app.all('/', (req, res) => {
+//     res.send('WELCOME TO TODO API')
+// })
 
 /* ------------------------------------------------------- */
+//* TodoModel moved to todo.model.js
 
-//* sequelize
-
-const { Sequelize, DataTypes } = require("sequelize");
-
-// const sequelize = new Sequelize("sqlite:./db.sqlite3")
-const sequelize = new Sequelize(
-  "sqlite:" + process.env.SQLITE || "./db.sqlite3"
-);
-
-const Todo = sequelize.define("todo", {
-  // ID IS CREATED AUTO BY DATABASE
-  // id:{
-  //     type: DataTypes.INTEGER,
-  //     unique: true,
-  //     allowNull: false,
-  //     field_name: 'coustume_column_name',// id ismi degistirme,
-  //     commnet: 'Description',
-  //     primaryKey: true,
-  //     autoIncrement: true,
-  // },
-  baslik: {
-    type: DataTypes.STRING(64),
-    allowNull: false,
-  },
-  description: DataTypes.TEXT,
-
-  priority: {
-    // 1: high, 0: normal , -1: low
-    type: DataTypes.TINYINT,
-    allowNull: false,
-    defaultValue: 0, // set dafault value
-  },
-
-  isDone: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
-});
-//! no needed to define "createdAt" and "updatedAt" sqlite make them aoutomatically
-//TODO: createdAt: false // unset //
-//TODO:  createdAt: false // unset//
-
-//* synchronization:
-//! SYNC MUST RUN ONCE!
- //sequelize.sync()
-// sequelize.sync({force:true}) // drop & create :
-//sequelize.sync({ alter: true }); // TO BACKUP & DROP & CREATE & FROM BACKUP
-
-// Connect:
-
-sequelize.authenticate()
-.then(()=>console.log('* DB Connected'))
-.catch((err)=> console.log('*DB Not Connected *',err))
+app.use(require('./todo.router'))
 
 /* ------------------------------------------------------- */
 
 const errorHandler = (err, req, res, next) => {
-  const errorStatusCode = res.errorStatusCode ?? 500;
-  console.log("errorHandler is runned");
-  res.status(errorStatusCode).send({
-    error: true,
-    message: err.message,
-    cause: err.cause,
-  });
-};
-
-app.use(errorHandler);
-
+    const errorStatusCode = res.errorStatusCode ?? 500
+    console.log('errorHandler runned.')
+    res.status(errorStatusCode).send({
+        error: true, // special data
+        message: err.message, // error string message
+        cause: err.cause, // error option cause
+        // stack: err.stack, // error details
+        body: req.body,
+    })
+}
+app.use(errorHandler)
 /* ------------------------------------------------------- */
-
-app.listen(PORT, () => console.log("Running at : http:127.0.0.1:" + PORT));
+app.listen(PORT, () => console.log("Running: http://127.0.0.1:" + PORT));
