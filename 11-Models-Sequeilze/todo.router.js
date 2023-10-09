@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 
     // const data = await Todo.findAll()
     const data = await Todo.findAndCountAll()
-    res.send({
+    res.status(200).send({
         error: false,
         result: data
     })
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
     // })
     // console.log( typeof req.body, req.body )
     const data = await Todo.create(req.body)
-    res.send({
+    res.status(201).send({
         error: false,
         body: req.body, // Send Data
         message: 'Created',
@@ -41,19 +41,38 @@ router.get('/:id', async (req, res) => {
     // const data = await Todo.findOne({ where: { id: req.params.id } })
     
     const data = await Todo.findByPk(req.params.id)
-    res.send({
+    res.status(200).send({
         error: false,
         result: data
     })
-
+ 
 })
 
-// UPDATE:
-router.put('/:id', async (req, res) => {
+//Update
+router.put('/:id', async(req, res) => {
 
-    // Model.update({ newData }, { filter })
-    // const data = await Todo.update(req.body, )
+    const isUpdated = await Todo.update(req.body, { where: { id: req.params.id } })
+    res.send({
+        error: false,
+        body: req.body, // Send Data
+        message: 'Updated',
+        isUpdated: isUpdated,
+        result: await Todo.findByPk(req.params.id) // Receive Data
+    })
+});
+//Delete
+router.delete('/:id', async(req, res) => {
 
-})
+    const isDeleted = await Todo.destroy({ where: { id: req.params.id } })
+    res.send({
+        error: false,
+      //  body: req.body, // Send Data delete isleminde yapilmaz
+        message: 'Deleted',
+        isDeleted: Boolean(isDeleted)
+      //  result: await Todo.findByPk(req.params.id) // Receive Data
+    })
+});
+
+
 
 module.exports = router
