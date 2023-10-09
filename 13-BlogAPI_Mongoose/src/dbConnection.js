@@ -5,9 +5,9 @@
 
 const mongoose = require('mongoose')
 
-// const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/blogAPI'
+// const MONGODB = prcess.env.MONGODB || 'mongodb://localhost:27017/'
 // mongoose.connect(MONGODB)
 
 mongoose.connect(process.env.MONGODB)
-    .then(() => console.log(' * DB Connected * '))
-    .catch((err) => console.log(' * DB Not Connected * ', err))
+.then(()=> console.log('* DB Connected'))
+.catch((err)=>console.log(' * DB Not Connected * ' ,err))
