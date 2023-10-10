@@ -5,19 +5,19 @@
 const router = require('express').Router()
 
 // Call Controllers:
-const { BlogPost } = require('../controllers/blogController')
+const { BlogCategory, BlogPost } = require('../controllers/blogController')
 
 // ------------------------------------------
 // BlogCategory
 // ------------------------------------------
-// router.route('/category')
-//     .get(BlogCategory.list)
-//     .post(BlogCategory.create)
+router.route('/category')
+    .get(BlogCategory.list)
+    .post(BlogCategory.create)
 
-// router.route('/category/:categoryId')
-//     .get(BlogCategory.read)
-//     .put(BlogCategory.update)
-//     .delete(BlogCategory.delete)
+router.route('/category/:categoryId')
+    .get(BlogCategory.read)
+    .put(BlogCategory.update)
+    .delete(BlogCategory.delete)
 
 // ------------------------------------------
 // BlogPost
@@ -31,6 +31,6 @@ router.route('/post/:postId')
     .put(BlogPost.update)
     .delete(BlogPost.delete)
 
-// router.get('/category/:categoryId/posts', BlogPost.listCategoryPosts)
+router.get('/category/:categoryId/posts', BlogPost.listCategoryPosts)
 
 module.exports = router

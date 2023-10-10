@@ -1,38 +1,28 @@
-"use strict"
-/* -------------------------------------------------------
-    EXPRESSJS - BLOG Project with Mongoose
-------------------------------------------------------- */
+"user strict";
 
 const mongoose = require('mongoose')
-const passwordEncrypt = require('../helpers/passwordEncrypt')
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
-    email: {
+    email:{
         type: String,
-        trim: true,
+        trim:true,
         unique: true,
-        required: [true, 'Email field must be required.'],
-        validate: [
-            (email) => (email.includes('@') && email.includes('.')), // ValidationCheck
-            'Email type is incorrect.' // If false Message.
-        ]
-    },
+        required: [true, "email field must be required"],
 
-    password: {
-        type: String,
+    },
+    password:{
+        type:String,
         trim: true,
         required: true,
-        set: (password) => passwordEncrypt(password)
-    },
+        
 
+    },
     firstName: String,
 
     lastName: String,
 
-}, {
-    collection: 'users',
-    timestamps: true
+},{
+    collection: "users",
+    timestamp: true
 })
-
-module.exports = mongoose.model('User', UserSchema)

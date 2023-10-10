@@ -4,11 +4,12 @@
 ------------------------------------------------------- */
 // Catch Errors:
 
-module.exports = (err,req,res,next)=>{
-    const statusCode = res?.statusCode ?? 500
+module.exports = (err, req, res, next) => {
+
+    const errorStatusCode = res?.errorStatusCode ?? 500
 
     res.status(errorStatusCode).send({
-        error : true,
+        error: true,
         message: err.message,
         cause: err.cause,
         body: req.body
