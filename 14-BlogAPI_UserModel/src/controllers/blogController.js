@@ -156,4 +156,7 @@ module.exports.BlogPost = {
         res.sendStatus( (data.deletedCount >= 1) ? 204 : 404 )
 
     },
+
+    
 }
+
