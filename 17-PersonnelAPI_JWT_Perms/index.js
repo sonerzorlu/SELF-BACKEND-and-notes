@@ -40,25 +40,25 @@ app.use(require('cookie-session')({ secret: process.env.SECRET_KEY }))
 app.use(require('./src/middlewares/findSearchSortPage'))
 
 // Cookie: Login/Logout Control Middleware
-app.use(async (req, res, next) => {
+// app.use(async (req, res, next) => {
 
-    const Personnel = require('./src/models/personnel.model')
+//     const Personnel = require('./src/models/personnel.model')
 
-    req.isLogin = false
+//     req.isLogin = false
 
-    if (req.session?.id) {
+//     if (req.session?.id) {
 
-        const user = await Personnel.findOne({ _id: req.session.id })
+//         const user = await Personnel.findOne({ _id: req.session.id })
 
-        // if (user && user.password == req.session.password) {
-        //     req.isLogin = true
-        // }
-        req.isLogin = user && user.password == req.session.password
-    }
-    console.log('isLogin: ', req.isLogin)
+//         // if (user && user.password == req.session.password) {
+//         //     req.isLogin = true
+//         // }
+//         req.isLogin = user && user.password == req.session.password
+//     }
+//     console.log('isLogin: ', req.isLogin)
 
-    next()
-})
+//     next()
+// })
 
 //* Moved -> middlewares/authentication.js
 // const jwt = require('jsonwebtoken')
@@ -82,7 +82,7 @@ app.use(async (req, res, next) => {
 //     })
 //     next()
 // })
-// app.use(require('./src/middlewares/authentication'))
+app.use(require('./src/middlewares/authentication'))
 
 /* ------------------------------------------------------- */
 // Routes:
